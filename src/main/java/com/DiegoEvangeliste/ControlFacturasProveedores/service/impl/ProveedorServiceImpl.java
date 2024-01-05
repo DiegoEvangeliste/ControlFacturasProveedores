@@ -35,6 +35,7 @@ public class ProveedorServiceImpl implements IProveedorService {
             optional.get().setDomicilio(proveedor.getDomicilio());
             optional.get().setTelefono(proveedor.getTelefono());
             optional.get().setEmail(proveedor.getEmail());
+            repository.saveAndFlush(optional.get());
             return ResponseEntity.ok(optional.get());
         } else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

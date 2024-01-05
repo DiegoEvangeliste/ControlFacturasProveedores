@@ -32,6 +32,7 @@ public class ProductoServiceImpl implements IProductoService {
         if (optional.isPresent()) {
             optional.get().setDescripcion(producto.getDescripcion());
             optional.get().setPrecio(producto.getPrecio());
+            repository.saveAndFlush(optional.get());
             return ResponseEntity.ok(optional.get());
         } else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

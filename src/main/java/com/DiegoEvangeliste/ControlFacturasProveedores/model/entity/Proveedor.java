@@ -31,7 +31,7 @@ public class Proveedor {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "razonSocial")
+    @Column(name = "razon_social")
     private String razonSocial;
 
     @Column(name = "cuit")
