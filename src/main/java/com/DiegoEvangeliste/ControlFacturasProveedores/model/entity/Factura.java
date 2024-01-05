@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,19 +38,20 @@ public class Factura {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "estadoPago")
+    @Column(name = "estado_pago")
     private Boolean estadoPago;
 
-    @Column(name = "puntoVenta")
+    @Column(name = "punto_venta")
     private Integer puntoVenta;
 
-    @Column(name = "numeroComprobante")
+    @Column(name = "numero_comprobante")
     private Integer numeroComprobante;
 
-    @Column(name = "numeroRemito")
+    @Column(name = "numero_remito")
     private Integer numeroRemito;
 
-    @Column(name = "fechaEmision")
+    @Column(name = "fecha_emision")
+    @Temporal(TemporalType.DATE)
     private LocalDate fechaEmision;
 
         // Relacion IDA con Proveedor
