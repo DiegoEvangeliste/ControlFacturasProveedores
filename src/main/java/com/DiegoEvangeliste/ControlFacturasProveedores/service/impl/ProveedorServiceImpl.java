@@ -67,6 +67,22 @@ public class ProveedorServiceImpl implements IProveedorService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    public ResponseEntity<List<Proveedor>> findByRazonSocial(String razonSocial) {
+        List<Proveedor> proveedores = repository.findByRazonSocial(razonSocial);
+        if (!proveedores.isEmpty())
+            return ResponseEntity.ok(proveedores);
+        else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    public ResponseEntity<List<String>> findAllEmails() {
+        List<String> emails = repository.findAllEmails();
+        if (!emails.isEmpty())
+            return ResponseEntity.ok(emails);
+        else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     @Override
     public ResponseEntity<Page<Proveedor>> findAllByPages(Pageable pageable) {
         Optional<Page<Proveedor>> optional = Optional.ofNullable(repository.findAll(pageable));
@@ -74,6 +90,7 @@ public class ProveedorServiceImpl implements IProveedorService {
             return ResponseEntity.ok(optional.get());
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
 }
