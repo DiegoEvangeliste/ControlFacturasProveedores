@@ -4,6 +4,8 @@ import com.DiegoEvangeliste.ControlFacturasProveedores.model.entity.Proveedor;
 import com.DiegoEvangeliste.ControlFacturasProveedores.repository.ProveedorRepository;
 import com.DiegoEvangeliste.ControlFacturasProveedores.service.IProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -64,4 +66,14 @@ public class ProveedorServiceImpl implements IProveedorService {
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @Override
+    public ResponseEntity<Page<Proveedor>> findAllByPages(Pageable pageable) {
+        Optional<Page<Proveedor>> optional = Optional.ofNullable(repository.findAll(pageable));
+        if (optional.isPresent())
+            return ResponseEntity.ok(optional.get());
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }

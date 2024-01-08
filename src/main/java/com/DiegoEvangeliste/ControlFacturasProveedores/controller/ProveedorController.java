@@ -3,6 +3,9 @@ package com.DiegoEvangeliste.ControlFacturasProveedores.controller;
 import com.DiegoEvangeliste.ControlFacturasProveedores.model.entity.Proveedor;
 import com.DiegoEvangeliste.ControlFacturasProveedores.service.impl.ProveedorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -46,6 +50,12 @@ public class ProveedorController {
     @GetMapping
     public ResponseEntity<List<Proveedor>> findAll(){
         return service.findAll();
+    }
+
+    @GetMapping("/paged")
+    public ResponseEntity<Page<Proveedor>> findAllByPages(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+        Pageable pageable  = PageRequest.of(page, size);
+        return service.findAllByPages(pageable);
     }
 
 }
