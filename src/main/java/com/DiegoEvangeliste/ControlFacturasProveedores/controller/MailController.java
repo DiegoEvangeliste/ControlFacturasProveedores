@@ -3,6 +3,9 @@ package com.DiegoEvangeliste.ControlFacturasProveedores.controller;
 import com.DiegoEvangeliste.ControlFacturasProveedores.dto.EmailFileDto;
 import com.DiegoEvangeliste.ControlFacturasProveedores.dto.EmailSimpleDto;
 import com.DiegoEvangeliste.ControlFacturasProveedores.service.IEmailService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,6 +31,9 @@ public class MailController {
     private IEmailService emailService;
 
     @PostMapping("/sendSimpleMessage")
+    @Operation(summary = "Send simple message by email", description = "Send a text-only email")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The email was sent successfully.")})
     public ResponseEntity<Map<String, String>> receiveRequestEmail(@RequestBody EmailSimpleDto email) {
         emailService.sendSimpleEmail(email.toUsers(), email.subject(), email.message());
 
@@ -38,6 +44,10 @@ public class MailController {
     }
 
     @PostMapping("/sendMessageFile")
+    @Operation(summary = "Send message with file by email", description = "Send an email containing text and attachments.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The email was sent successfully."),
+            @ApiResponse(responseCode = "409", description = "Error sending email.")})
     public ResponseEntity<Map<String, String>> receiveRequestEmailWithFile(@ModelAttribute EmailFileDto email) {
         try {
             String fileName = email.file().getOriginalFilename();
