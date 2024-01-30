@@ -1,17 +1,19 @@
 package com.DiegoEvangeliste.ControlFacturasProveedores.service;
 
+import com.DiegoEvangeliste.ControlFacturasProveedores.dto.ProveedorDTO;
 import com.DiegoEvangeliste.ControlFacturasProveedores.model.entity.Proveedor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface IProveedorService {
-    ResponseEntity<Proveedor> save(Proveedor proveedor);
-    ResponseEntity<Proveedor> update(Proveedor proveedor);
-    ResponseEntity<Proveedor> findById(Long id);
-    ResponseEntity<List<Proveedor>> findAll();
-    ResponseEntity<Proveedor> deleteById(Long id);
-    ResponseEntity<Page<Proveedor>> findAllByPages(Pageable pageable);
+    ProveedorDTO save(Proveedor proveedor);
+    ProveedorDTO update(Proveedor proveedor);
+    ProveedorDTO findById(Long id);
+    List<ProveedorDTO> findAll();
+    boolean deleteById(Long id);
+    Page<Proveedor> findAllByPages(Pageable pageable);
+    List<String> findAllEmails();
+    List<ProveedorDTO> findByRazonSocial(String razonSocial);
 }

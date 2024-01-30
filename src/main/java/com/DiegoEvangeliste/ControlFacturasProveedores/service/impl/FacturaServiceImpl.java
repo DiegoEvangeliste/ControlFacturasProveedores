@@ -1,13 +1,13 @@
 package com.DiegoEvangeliste.ControlFacturasProveedores.service.impl;
 
+import com.DiegoEvangeliste.ControlFacturasProveedores.dto.FacturaDTO;
 import com.DiegoEvangeliste.ControlFacturasProveedores.model.entity.Factura;
 import com.DiegoEvangeliste.ControlFacturasProveedores.repository.FacturaRepository;
 import com.DiegoEvangeliste.ControlFacturasProveedores.service.IFacturaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,16 +18,15 @@ public class FacturaServiceImpl implements IFacturaService {
     FacturaRepository repository;
 
     @Override
-    public ResponseEntity<Factura> save(Factura factura){
+    public FacturaDTO save(Factura factura){
         if (!repository.existsById(factura.getId())) {
-            repository.save(factura);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return FacturaDTO.fromFactura(repository.save(factura));
         } else
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return null;
     }
 
     @Override
-    public ResponseEntity<Factura> update(Factura factura) {
+    public FacturaDTO update(Factura factura) {
         Optional<Factura> optional = repository.findById(factura.getId());
         if (optional.isPresent()) {
             optional.get().setEstadoPago(factura.getEstadoPago());
@@ -36,32 +35,31 @@ public class FacturaServiceImpl implements IFacturaService {
             optional.get().setNumeroRemito(factura.getNumeroRemito());
             optional.get().setFechaEmision(factura.getFechaEmision());
             repository.saveAndFlush(optional.get());
-            return ResponseEntity.ok(optional.get());
-        } else
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return FacturaDTO.fromFactura(optional.get());
     }
 
     @Override
-    public ResponseEntity<Factura> deleteById(Long id) {
+    public boolean deleteById(Long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return true;
         } else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return false;
     }
 
     @Override
-    public ResponseEntity<Factura> findById(Long id) {
-        Optional<Factura> optional = repository.findById(id);
-        return ResponseEntity.ok(optional.orElseThrow());
+    public FacturaDTO findById(Long id) {
+        return FacturaDTO.fromFactura(repository.findById(id).orElseThrow());
     }
 
     @Override
-    public ResponseEntity<List<Factura>> findAll() {
-        List<Factura> list = repository.findAll();
-        if (!list.isEmpty())
-            return ResponseEntity.ok(list);
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public List<FacturaDTO> findAll() {
+        List<Factura> facturas = repository.findAll();
+        List<FacturaDTO> dtos = new ArrayList<>();
+        if (!facturas.isEmpty())
+            for (Factura factura : facturas)
+                dtos.add(FacturaDTO.fromFactura(factura));
+        return dtos;
     }
 }

@@ -1,13 +1,13 @@
 package com.DiegoEvangeliste.ControlFacturasProveedores.service.impl;
 
+import com.DiegoEvangeliste.ControlFacturasProveedores.dto.ProductoDTO;
 import com.DiegoEvangeliste.ControlFacturasProveedores.model.entity.Producto;
 import com.DiegoEvangeliste.ControlFacturasProveedores.repository.ProductoRepository;
 import com.DiegoEvangeliste.ControlFacturasProveedores.service.IProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,48 +18,43 @@ public class ProductoServiceImpl implements IProductoService {
     ProductoRepository repository;
 
     @Override
-    public ResponseEntity<Producto> save(Producto producto){
-        if (!repository.existsById(producto.getId())) {
-            repository.save(producto);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } else
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ProductoDTO save(Producto producto){
+        return ProductoDTO.fromProducto(repository.save(producto));
     }
 
     @Override
-    public ResponseEntity<Producto> update(Producto producto) {
+    public ProductoDTO update(Producto producto) {
         Optional<Producto> optional = repository.findById(producto.getId());
         if (optional.isPresent()) {
             optional.get().setDescripcion(producto.getDescripcion());
             optional.get().setPrecio(producto.getPrecio());
             repository.saveAndFlush(optional.get());
-            return ResponseEntity.ok(optional.get());
-        } else
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return ProductoDTO.fromProducto(optional.get());
     }
 
     @Override
-    public ResponseEntity<Producto> deleteById(Long id) {
+    public boolean deleteById(Long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return true;
         } else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return false;
     }
 
     @Override
-    public ResponseEntity<Producto> findById(Long id) {
-        Optional<Producto> optional = repository.findById(id);
-        return ResponseEntity.ok(optional.orElseThrow());
+    public ProductoDTO findById(Long id) {
+        return ProductoDTO.fromProducto(repository.findById(id).orElseThrow());
     }
 
     @Override
-    public ResponseEntity<List<Producto>> findAll() {
-        List<Producto> list = repository.findAll();
-        if (!list.isEmpty())
-            return ResponseEntity.ok(list);
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public List<ProductoDTO> findAll() {
+        List<Producto> productos = repository.findAll();
+        List<ProductoDTO> dtos = new ArrayList<>();
+        if (!productos.isEmpty())
+            for (Producto producto : productos)
+                dtos.add(ProductoDTO.fromProducto(producto));
+        return dtos;
     }
 
 }
