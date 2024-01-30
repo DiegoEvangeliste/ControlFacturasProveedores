@@ -1,8 +1,7 @@
 package com.DiegoEvangeliste.ControlFacturasProveedores.controller;
 
 import com.DiegoEvangeliste.ControlFacturasProveedores.dto.FacturaDTO;
-import com.DiegoEvangeliste.ControlFacturasProveedores.dto.ProveedorDTO;
-import com.DiegoEvangeliste.ControlFacturasProveedores.model.entity.Proveedor;
+import com.DiegoEvangeliste.ControlFacturasProveedores.model.entity.Factura;
 import com.DiegoEvangeliste.ControlFacturasProveedores.service.impl.FacturaServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

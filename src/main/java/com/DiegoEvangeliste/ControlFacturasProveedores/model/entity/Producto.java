@@ -5,16 +5,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Setter
@@ -35,9 +31,5 @@ public class Producto {
 
     @Column(name = "precio")
     private Double precio;
-
-        // Relacion VUELTA con Factura
-//    @ManyToMany(mappedBy = "productos")
-//    private List<Factura> facturas;
 
 }
